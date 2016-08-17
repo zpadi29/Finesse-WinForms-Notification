@@ -8,9 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+//include
+using System.Web.Script.Serialization;
+using System.IO;
+using System.Diagnostics;
+using System.Net;
 
 namespace WindowsFormsApplication2
 {
+    
     public partial class Form2 : Form
     {
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -26,23 +32,47 @@ namespace WindowsFormsApplication2
 
         public Form2(string[] args)
         {
+            int numVal1;
+            int numVal2;
+            int numVal3;
+
             InitializeComponent();
 
-            if (args.Length == 3)
+            if (args.Length > 0)
             {
-                int numVal1;
-                int numVal2;
-                int numVal3;
-                numVal1 = Convert.ToInt32(args[0]);
-                numVal2 = Convert.ToInt32(args[1]);
-                numVal3 = Convert.ToInt32(args[2]);
-                BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
-                textBox2.BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
-                textBox3.BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
-                textBox4.BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
-                button1.BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
+                string[] argsdata = args[0].Replace("screenpop:", "").Replace("%20", " ").Split('@');
+
+                if (argsdata[0] == "blue")
+                {
+                    numVal1 = 204;
+                    numVal2 = 204;
+                    numVal3 = 255;
+                }
+                else if (argsdata[0] == "red")
+                {
+                    numVal1 = 255;
+                    numVal2 = 204;
+                    numVal3 = 204;
+                }
+                else
+                {
+                    numVal1 = 204;
+                    numVal2 = 255;
+                    numVal3 = 204;
+                }
+
+            BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
+            textBox2.BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
+            textBox3.BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
+            textBox4.BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
+            button1.BackColor = Color.FromArgb(numVal1, numVal2, numVal3);
+
+            textBox4.Text = argsdata[1];
+            textBox2.Text = argsdata[2];
+            textBox3.Text = argsdata[3];
+              
             }
-            
+
             this.FormBorderStyle = FormBorderStyle.None;
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
         }
